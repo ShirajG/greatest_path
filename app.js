@@ -10,7 +10,7 @@
 //==================================
 function Board(arr){
     this.board = arr
-    this.memo = this.generateBoard(arr)
+    this.cache = this.generateEmptyBoard(arr)
 }
 Board.prototype = { 
     getMax: function(row, col){
@@ -26,16 +26,16 @@ Board.prototype = {
             return this.getMax(row -1, col) + this.board[row][col]
         }
         // Record the path taken.
-        return Math.max( 
+        return this.cache[row][col] = this.board[row][col] + Math.max( 
             this.getMax(row - 1, col), this.getMax(row, col - 1) 
-        ) + this.board[row][col]
+        )
     },
-    generateBoard: function(arr) {
+    generateEmptyBoard: function(arr) {
         var newBoard = []
         for(var i=0;i<arr.length;i++){
             newBoard.push(new Array)
             for(var j=0;j<arr[0].length;j++){
-                newBoard[i][j] = false
+                newBoard[i][j] = null 
             }
         }
         return newBoard
@@ -50,5 +50,5 @@ test = new Board(
      [7,8,7,6,2,5],
      [3,4,0,5,0,4]]
 )
-console.log(test.memo)
+console.log(test.cache)
 console.log(test.getMax(5,5))
