@@ -1,11 +1,16 @@
 //=================================
-//   Greatest Path                \\
+//   Greatest Path Algorithm      \\
 //==================================
 //
 // Start at the final square
 // Work backwards to top left.
+// Recursively select the greater
+// path.
+//
+//==================================
 function Board(arr){
     this.board = arr
+    this.memo = this.generateBoard(arr)
 }
 Board.prototype = { 
     getMax: function(row, col){
@@ -13,16 +18,29 @@ Board.prototype = {
             return this.board[row][col]
         }
         if (row === 0){
+            // Mark that we went left
             return this.getMax(row, col-1) + this.board[row][col]
         }
         if (col === 0){
+            // Mark that we went up
             return this.getMax(row -1, col) + this.board[row][col]
         }
-        return Math.max(
-            this.getMax(row - 1, col) + this.board[row][col],
-            this.getMax(row, col - 1) + this.board[row][col]
-        )
+        // Record the path taken.
+        return Math.max( 
+            this.getMax(row - 1, col), this.getMax(row, col - 1) 
+        ) + this.board[row][col]
+    },
+    generateBoard: function(arr) {
+        var newBoard = []
+        for(var i=0;i<arr.length;i++){
+            newBoard.push(new Array)
+            for(var j=0;j<arr[0].length;j++){
+                newBoard[i][j] = false
+            }
+        }
+        return newBoard
     }
+
 };
 test = new Board(
     [[0,5,0,8,1,8],
@@ -32,4 +50,5 @@ test = new Board(
      [7,8,7,6,2,5],
      [3,4,0,5,0,4]]
 )
+console.log(test.memo)
 console.log(test.getMax(5,5))
