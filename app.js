@@ -105,5 +105,5 @@ crazy = new Board(
 )
 
 // console.log(test.cache)
-console.log(test.getMax(5,5))
+// console.log(test.getMax(5,5))
 console.log(crazy.getMax(crazy.board.length - 1 , crazy.board.length - 1))
