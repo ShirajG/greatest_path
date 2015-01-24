@@ -1,0 +1,17 @@
+.cell{
+  border: 1px solid gray;
+  font-family: monospace;
+  overflow: hidden;
+  list-style: none;
+  display: inline;
+  padding: 5px;
+}
+#app div{
+  margin: 0 auto;
+  width: 80%;
+  padding: 4px;
+}
+.active{
+  color: white;
+  background-color: green;
+}
