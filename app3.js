@@ -89,12 +89,13 @@ Board.prototype = {
         var frag = document.createDocumentFragment()
         this.board.forEach(function (row, row_index) {
             var _row = document.createElement('div')
+            _row.setAttribute('class','row')
             row.forEach(function (cell, col_index) {
-                var li = document.createElement('li')
-                li.setAttribute('class', 'cell')
-                li.id = '_' + row_index + col_index
-                li.innerHTML = ""+cell
-                _row.appendChild(li)
+                var div = document.createElement('div')
+                div.setAttribute('class', 'cell')
+                div.id = '_' + row_index + col_index
+                div.innerHTML = ""+cell
+                _row.appendChild(div)
             })
             frag.appendChild(_row)
         })

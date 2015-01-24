@@ -1,17 +1,21 @@
-.cell{
+#app .cell{
+  min-width: 50px;
+  min-height: 50px;
+  margin-left: -1px;
   border: 1px solid gray;
   font-family: monospace;
-  overflow: hidden;
-  list-style: none;
-  display: inline;
-  padding: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  background-color: #BEDDDD;
 }
-#app div{
+#app .row{
+  margin-bottom: -5px;
+}
+#app{
+  width: 75%;
   margin: 0 auto;
-  width: 80%;
-  padding: 4px;
 }
-.active{
+#app .active{
   color: white;
-  background-color: green;
+  background-color: #5AC874;
 }
