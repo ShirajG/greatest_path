@@ -8,6 +8,18 @@
 // path.
 //
 //==================================
+function pathParser (array) {
+    var res = []
+    for(var i=0; i < array.length-1; i++){
+        if(array[i][0] < array[i+1][0]){
+            res.push("D")
+        }
+        else{
+            res.push("R")
+        }
+    }
+    return res
+}
 function Board(arr){
     this.board = arr
     this.cache = this.generateEmptyBoard(arr)
@@ -25,29 +37,38 @@ Board.prototype = {
         }
         if (row === 0){
             var greatest = this.getMax(row, col-1)
+            var newPath = greatest.path.slice(0)
+            newPath.push([row,col])
             return this.cache[row][col] = {
                 val:  greatest.val + this.board[row][col],
-                path: greatest.path.concat([row,col])
+                path: newPath
             }
         }
         if (col === 0){
             var greatest = this.getMax(row -1, col)
+            var newPath = greatest.path.slice(0)
+            newPath.push([row,col])
             return this.cache[row][col] = {
                 val:  greatest.val + this.board[row][col],
-                path: greatest.path.concat([row,col])
+                path: newPath 
             }
         }
-        if(this.getMax(row - 1, col).val > this.getMax(row, col - 1).val){
+        var path1 = this.getMax(row - 1, col)
+        var path2 = this.getMax(row, col - 1)
+        if(path1.val > path2.val){
+            var newPath = path1.path.slice(0)
+            newPath.push([row,col])
             return this.cache[row][col] = {
-                val: this.board[row][col] + this.getMax(row - 1, col).val,
-                path: this.getMax(row - 1, col).path.concat([row,col]) 
+                val: this.board[row][col] + path1.val,
+                path: newPath 
             }
-            
         }
         else {
+            var newPath = path2.path.slice(0)
+            newPath.push([row,col])
             return this.cache[row][col] = {
-                val: this.board[row][col] + this.getMax(row, col - 1).val,
-                path: this.getMax(row, col - 1).path.concat([row,col]) 
+                val: this.board[row][col] + path2.val,
+                path: newPath
             }
         }
     },
@@ -123,6 +144,10 @@ crazy = new Board(
      [54, 17, 732, 206, 9, 643, 250, 163, 738, 109, 36, 519, 708, 555, 158, 316, 194, 242, 499, 484, 626, 300, 101, 406, 719, 541, 30, 702, 180, 578, 444, 441, 457, 547, 530, 483, 624, 235, 119, 79, 744, 290, 262, 668, 95, 629, 442, 475, 733, 544]]
 )
 
-// console.log(test.cache)
-// console.log(test.getMax(5,5))
-console.log(crazy.getMax(crazy.board.length - 1 , crazy.board.length - 1))
+// test1 = test.getMax(test.board.length - 1 , test.board.length - 1)
+// console.log("The sum of the greatest path was: " + test1.val)
+// console.log("The path taken was: " + pathParser(test1.path))
+
+res = crazy.getMax(crazy.board.length - 1 , crazy.board.length - 1)
+console.log("The sum of the greatest path was: " + res.val)
+console.log("The path taken was: " + pathParser(res.path))
