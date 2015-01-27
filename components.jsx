@@ -24,7 +24,11 @@ var Utils = {
                 newBoard[i].push(Math.floor(Math.random() * 300))
             }
         } 
-        return newBoard
+        return newBoard;
+    },
+    getSize: function(){
+      var size = parseInt(prompt("Please enter the grid size"))
+      return size
     }
 }
 
@@ -46,7 +50,7 @@ var Board = React.createClass({
    },
    getInitialState: function(){
         return {
-            board: Utils.getRandomBoard(25) 
+            board: Utils.getRandomBoard( Utils.getSize()) 
         }
    }
 });
