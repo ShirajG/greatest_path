@@ -32,30 +32,46 @@ var Utils = {
     }
 }
 
-//--------------------------------|
-//        Components              |
-//--------------------------------|
-
-var Tile = React.createClass({
-    render: function(){},
+//---------------------------------
+//        Components              ||
+//---------------------------------
+var Cell = React.createClass({
+    render: function(){
+        var classes = "cell "+ this.props.row + " " + this.props.col + " " + this.props.position
+        if(this.props.active === "true"){
+            classes += " active"
+        }
+        return(
+            <div className={classes}>{this.props.value}</div>
+        )
+    },
 })
 var Board = React.createClass({
-   render: function(){
-        return(
-            <div>
-              <p>This is the board</p>
-              <p>{this.state.board[0].join(" ")}</p>
-            </div>
-        )
-   },
    getInitialState: function(){
         return {
             board: Utils.getRandomBoard( Utils.getSize()) 
         }
+   },
+   render: function(){
+    var cells = this.state.board.map(function(row, row_index){
+        return row.map(function(cell,cell_index){
+            if(cell_index === row.length - 1){
+                return <Cell value={cell} position="end" row={row_index} col={cell_index} active="false"/>
+            } else {
+                return <Cell value={cell} position="" row={row_index} col={cell_index} active="false"/>
+            }
+        })
+
+    })
+        return(
+            <div>
+              <p>This is the board</p>
+              {cells}
+            </div>
+        )
    }
 });
-
 React.render(
-  <Board/>,
-  document.getElementById('app')
+    <Board/>,
+    document.getElementById('app')
 )
