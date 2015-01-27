@@ -189,27 +189,24 @@ crazy = new Board(
 // console.log("The sum of the greatest path was: " + res.val)
 // console.log("The path taken was: " + pathParser(res.path))
 
-window.onload = function() {
-    test.displayBoard()
-    test.displayPath()
+// window.onload = function() {
+//     test.displayBoard()
+//     test.displayPath()
 
-    document.addEventListener('click',function(e){
-        if( e.target.className.indexOf('cell') > -1){
-            var newVal = prompt('enter a new value')
-            var row = parseInt(e.target.id[1])
-            var col = parseInt(e.target.id[2])
-            test.board[row][col] = parseInt(newVal)
-            var app = document.getElementById('app')
-            clearChildren(app)
-            test.clearCache()
-            test.displayBoard()
-            test.displayPath()
-        }
-    })
+//     document.addEventListener('click',function(e){
+//         if( e.target.className.indexOf('cell') > -1){
+//             var newVal = prompt('enter a new value')
+//             var row = parseInt(e.target.id[1])
+//             var col = parseInt(e.target.id[2])
+//             test.board[row][col] = parseInt(newVal)
+//             var app = document.getElementById('app')
+//             clearChildren(app)
+//             test.clearCache()
+//             test.displayBoard()
+//             test.displayPath()
+//         }
+//     })
 
-};
-function clearChildren (parentNode) {
-    while(app.firstChild){
-        app.removeChild(app.firstChild)
-    }
-}
+// };
+
+
