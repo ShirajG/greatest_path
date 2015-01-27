@@ -1,4 +1,4 @@
-#app .cell{
+.cell{
   min-width: 50px;
   min-height: 50px;
   margin-left: -1px;
@@ -8,17 +8,21 @@
   display: inline-block;
   background-color: #BEDDDD;
 }
-#app .row{
+.cell:after{
+  content:"\a";
+  white-space: pre;
+}
+.row{
   margin-bottom: -5px;
 }
 #app{
   width: 75%;
   margin: 0 auto;
 }
-#app .active{
+.active{
   color: white;
   background-color: #5AC874;
 }
-.end{
+.cell .end{
   display: block;
 }
