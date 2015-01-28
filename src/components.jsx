@@ -110,11 +110,16 @@ var Game = React.createClass({
    },
    render: function(){
         var parent = this
+        var sumDisplay = null
+        if(this.state.sum !== undefined){
+            sumDisplay = <p> The sum is: {this.state.sum} </p> 
+        }
         return(
             <div className="game">
                 {this.state.board.map(function(row, r_index){
                     return <Row activate={parent.getActive} data={row} row={r_index} key={r_index}/>
                 })}
+                {sumDisplay}
                 <button onClick={this.findPath}>Find Path</button>
             </div>
         )
