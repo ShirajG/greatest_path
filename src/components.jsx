@@ -1,7 +1,6 @@
 /**
 * @jsx React.DOM
 */
-
 //_____________________________________________
 //          GREATEST PATH REACT               \\
 //==============================================
@@ -35,7 +34,6 @@ var Utils = {
       return size
     }
 }
-
 //---------------------------------
 //        Components              ||
 //---------------------------------
@@ -46,38 +44,46 @@ var Cell = React.createClass({
         )
     }
 })
-
 var Row = React.createClass({
     render: function(){
-        var that = this
+        var parent = this
         return(
-            <div className="boardRow">
+            <div className="row">
                 {this.props.data.map(function(cell, index){
-                    return <Cell val={cell} col={index} row={that.props.row} key={that.props.row} />
+                    return <Cell val={cell} col={index} row={parent.props.row} key={[parent.props.row, index]} />
                 })}
             </div>
         )
     }
 });
-var Board = React.createClass({
-    
+var Game = React.createClass({
    getInitialState: function(){
         return {
             board: Utils.getRandomBoard( Utils.getSize()) 
         }
    },
+   findPath: function(){
+        var length = this.state.board.length - 1
+        var res = new Board(this.state.board).getMax(length,length)
+        this.setState({
+            sum : res.val,
+            path : res.path
+        })
+        console.log(res.val)
+        console.log(res.path)
+   },
    render: function(){
         return(
-            <div>
+            <div className="game">
                 {this.state.board.map(function(row, r_index){
                     return <Row data={row} key={r_index}/>
                 })}
+                <button onClick={this.findPath}>Find Path</button>
             </div>
         )
    }
 })
-
 React.render(
-    <Board />,
+    <Game />,
     document.getElementById('app')
 )
