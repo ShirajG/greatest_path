@@ -11,7 +11,29 @@
 //
 // Board Component gets initialized with a 2D Array
 // Maybe fill it with random numbers.
-// 
+//
+// Monkey Patch Array to support equality with another array 
+Array.prototype.equals = function (array) {
+    if (!array)
+        return false;
+    // compare lengths - can save a lot of time 
+    if (this.length != array.length)
+        return false;
+
+    for (var i = 0, l=this.length; i < l; i++) {
+        // Check if we have nested arrays
+        if (this[i] instanceof Array && array[i] instanceof Array) {
+            // recurse into the nested arrays
+            if (!this[i].equals(array[i]))
+                return false;       
+        }           
+        else if (this[i] != array[i]) { 
+            // Warning - two different object instances will never be equal: {x:20} != {x:20}
+            return false;   
+        }           
+    }       
+    return true;
+} 
 var Utils = {
     clearChildren: function(parentNode) {
         while(app.firstChild){
@@ -39,8 +61,12 @@ var Utils = {
 //---------------------------------
 var Cell = React.createClass({
     render: function () {
+        var classList = "cell"
+        if( this.props.activate(this.props.row, this.props.col)){
+            classList += " active"
+        }
         return(
-            <div className="cell">{this.props.val}</div>
+            <div className={classList}>{this.props.val}</div>
         )
     }
 })
@@ -50,7 +76,7 @@ var Row = React.createClass({
         return(
             <div className="row">
                 {this.props.data.map(function(cell, index){
-                    return <Cell val={cell} col={index} row={parent.props.row} key={[parent.props.row, index]} />
+                    return <Cell activate={parent.props.activate} val={cell} col={index} row={parent.props.row} key={[parent.props.row, index]} />
                 })}
             </div>
         )
@@ -69,14 +95,25 @@ var Game = React.createClass({
             sum : res.val,
             path : res.path
         })
-        console.log(res.val)
-        console.log(res.path)
+   },
+   getActive: function(row,col){
+        if(this.state.path === undefined){
+            return false
+        } else {
+            for(var i=0; i< this.state.path.length; i++){
+                if([row,col].equals(this.state.path[i])){
+                    return true
+                }
+            }
+            return false
+        }
    },
    render: function(){
+        var parent = this
         return(
             <div className="game">
                 {this.state.board.map(function(row, r_index){
-                    return <Row data={row} key={r_index}/>
+                    return <Row activate={parent.getActive} data={row} row={r_index} key={r_index}/>
                 })}
                 <button onClick={this.findPath}>Find Path</button>
             </div>
