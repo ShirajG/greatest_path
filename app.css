@@ -8,10 +8,6 @@
   display: inline-block;
   background-color: #BEDDDD;
 }
-.cell:after{
-  content:"\a";
-  white-space: pre;
-}
 .row{
   margin-bottom: -5px;
 }
@@ -22,7 +18,4 @@
 .active{
   color: white;
   background-color: #5AC874;
-}
-.cell .end{
-  display: block;
 }
