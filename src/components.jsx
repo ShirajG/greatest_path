@@ -66,7 +66,7 @@ var Cell = React.createClass({
             classList += " active"
         }
         return(
-            <div className={classList}>{this.props.val}</div>
+            <div onClick={this.props.update.bind(null, this.props.row, this.props.col)} className={classList}>{this.props.val}</div>
         )
     }
 })
@@ -76,27 +76,27 @@ var Row = React.createClass({
         return(
             <div className="row">
                 {this.props.data.map(function(cell, index){
-                    return <Cell activate={parent.props.activate} val={cell} col={index} row={parent.props.row} key={[parent.props.row, index]} />
+                    return <Cell update={ parent.props.update} activate={parent.props.activate} val={cell} col={index} row={parent.props.row} key={[parent.props.row, index]} />
                 })}
             </div>
         )
     }
 });
 var Game = React.createClass({
-   getInitialState: function(){
+    getInitialState: function(){
         return {
             board: Utils.getRandomBoard( Utils.getSize()) 
         }
-   },
-   findPath: function(){
+    },
+    findPath: function(){
         var length = this.state.board.length - 1
         var res = new Board(this.state.board).getMax(length,length)
         this.setState({
             sum : res.val,
             path : res.path
         })
-   },
-   getActive: function(row,col){
+    },
+    getActive: function(row,col){
         if(this.state.path === undefined){
             return false
         } else {
@@ -107,8 +107,19 @@ var Game = React.createClass({
             }
             return false
         }
-   },
-   render: function(){
+    },
+    setCell: function(row,col){
+        var newVal = parseInt(prompt("Enter a new value"))
+        var newBoard = this.state.board
+        newBoard[row][col] = newVal
+        res = new Board(newBoard).getMax(newBoard.length - 1,newBoard.length - 1)
+        this.setState({
+           board : newBoard,
+           val : res.val,
+           path: res.path
+        })
+    },
+    render: function(){
         var parent = this
         var sumDisplay = null
         if(this.state.sum !== undefined){
@@ -117,13 +128,13 @@ var Game = React.createClass({
         return(
             <div className="game">
                 {this.state.board.map(function(row, r_index){
-                    return <Row activate={parent.getActive} data={row} row={r_index} key={r_index}/>
+                    return <Row update={parent.setCell} activate={parent.getActive} data={row} row={r_index} key={r_index}/>
                 })}
                 {sumDisplay}
                 <button onClick={this.findPath}>Find Path</button>
             </div>
         )
-   }
+    }
 })
 React.render(
     <Game />,
